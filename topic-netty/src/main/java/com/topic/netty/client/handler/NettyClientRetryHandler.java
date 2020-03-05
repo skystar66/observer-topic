@@ -44,9 +44,11 @@ public class NettyClientRetryHandler extends ChannelInboundHandlerAdapter {
         MessageDto messageDto = new MessageDto();
         messageDto.setCmd(MessageConstants.ACTION_HEART_CHECK);
         heartCmd = new RpcCmd();
-        heartCmd.setData(messageDto);
+        heartCmd.setMsg(messageDto);
         heartCmd.setKey(MessageConstants.ACTION_HEART_CHECK
                 + SnowflakeIdWorker.getInstance().nextId());
+        heartCmd.setEvent(MessageConstants.ACTION_HEART_CHECK);
+
 //        this.clientInitCallBack = clientInitCallBack;
     }
 

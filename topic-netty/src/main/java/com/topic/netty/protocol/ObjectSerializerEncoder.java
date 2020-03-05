@@ -15,7 +15,7 @@
  */
 package com.topic.netty.protocol;
 
-import com.xuliang.lcn.common.util.serializer.SerializerContext;
+import com.topic.netty.serializer.SerializerContext;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.channel.ChannelHandlerContext;

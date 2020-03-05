@@ -1,6 +1,7 @@
 package com.topic.msg.dto;
 
 
+import com.topic.msg.MessageConstants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,11 @@ public class MessageDto implements Serializable {
      * 请求参数
      */
     private Serializable data;
+
+    /**
+     * 请求状态
+     */
+    private int state = MessageConstants.STATE_REQUEST;
 
 
     public <T> T loadBean(Class<T> tClass) {

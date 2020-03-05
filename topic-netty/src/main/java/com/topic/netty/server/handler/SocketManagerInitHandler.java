@@ -3,6 +3,7 @@ package com.topic.netty.server.handler;
 import com.topic.msg.MessageConstants;
 import com.topic.msg.dto.MessageDto;
 import com.topic.msg.dto.RpcCmd;
+import com.topic.msg.enums.EventType;
 import com.topic.msg.manager.SocketChannelManager;
 import com.topic.netty.util.SnowflakeIdWorker;
 import io.netty.channel.ChannelHandler;
@@ -42,10 +43,10 @@ public class SocketManagerInitHandler extends ChannelInboundHandlerAdapter {
         MessageDto messageDto = new MessageDto();
         messageDto.setCmd(MessageConstants.ACTION_HEART_CHECK);
         heartCmd = new RpcCmd();
-        heartCmd.setData(messageDto);
+        heartCmd.setMsg(messageDto);
         heartCmd.setKey(MessageConstants.ACTION_HEART_CHECK + SnowflakeIdWorker.getInstance().nextId());
+        heartCmd.setEvent(MessageConstants.ACTION_HEART_CHECK);
     }
-
 
 
     @Override

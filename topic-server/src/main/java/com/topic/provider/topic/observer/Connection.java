@@ -1,5 +1,7 @@
 package com.topic.provider.topic.observer;
 
+import com.topic.msg.dto.MessageDto;
+import com.topic.msg.dto.RpcCmd;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,6 +47,10 @@ public class Connection extends SubscriberAdapter implements Subscriber {
 
     @Override
     public void send(Object message) {
-        channel.writeAndFlush(message);
+        RpcCmd rpcCmd = new RpcCmd();
+        MessageDto messageDto = new MessageDto();
+        messageDto.setData(messageDto);
+        rpcCmd.setMsg(messageDto);
+        channel.writeAndFlush(rpcCmd);
     }
 }

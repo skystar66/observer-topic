@@ -51,7 +51,17 @@ public class NettyChannelManager {
 
 
     public boolean contains(String channelId) {
-        return getChannel2(channelId) == null;
+        return getChannel2(channelId) != null;
+    }
+
+
+    public int currentSize() {
+        return channelGroup.size();
+    }
+
+
+    public ChannelGroup getChannelGroup() {
+        return channelGroup;
     }
 
 

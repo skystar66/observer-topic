@@ -3,6 +3,8 @@ package com.topic.netty.handler;
 
 import com.topic.msg.MessageConstants;
 import com.topic.msg.dto.RpcCmd;
+import com.topic.netty.content.RpcCmdContext;
+import com.topic.netty.content.RpcContent;
 import com.topic.netty.enums.NettyType;
 import com.topic.netty.util.NettyContext;
 import io.netty.channel.ChannelHandler;
@@ -10,6 +12,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 /**
  * Description:
@@ -26,8 +29,6 @@ public class ReciveDataHandler extends SimpleChannelInboundHandler<RpcCmd> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcCmd cmd) throws Exception {
-
-        String key = cmd.getKey();
         log.info("cmd->{}", cmd);
         //心态数据包直接响应
         if (cmd.getEvent() != null &&
@@ -38,6 +39,19 @@ public class ReciveDataHandler extends SimpleChannelInboundHandler<RpcCmd> {
                 return;
             }
             return;
+        }
+
+        if (!StringUtils.isEmpty(cmd.getKey())) {
+            RpcContent rpcContent = RpcCmdContext.getInstance().getKey(cmd.getKey());
+            if (rpcContent != null) {
+                log.info("got response message[Netty Handler]");
+                rpcContent.setRes(cmd.getMsg());
+                rpcContent.signal();
+                return;
+            } else {
+                ctx.fireChannelRead(cmd);
+                return;
+            }
         }
         // 通知执行下一个InboundHandler
         ctx.fireChannelRead(cmd);

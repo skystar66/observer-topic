@@ -1,6 +1,6 @@
 package com.topic.customer.manager;
 
-import com.topic.customer.controller.channel.NettyChannelManager;
+import com.topic.customer.client.channel.NettyChannelManager;
 import com.topic.msg.manager.SocketChannelManager;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Component;

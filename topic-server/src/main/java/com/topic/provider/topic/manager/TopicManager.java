@@ -1,7 +1,7 @@
 package com.topic.provider.topic.manager;
 
-import com.topic.msg.dto.Response;
 import com.topic.msg.dto.RpcCmd;
+import com.topic.provider.server.MessageCreator;
 import com.topic.provider.server.channel.NettyChannelManager;
 import com.topic.provider.topic.DirectTopic;
 import com.topic.provider.topic.TopicType;
@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.topic.msg.enums.EventType.LOGIN;
 import static com.topic.msg.enums.ResponseCode.INVALID_REQUEST;
 import static com.topic.msg.enums.ResponseCode.NOT_LOGIN;
 import static com.topic.provider.utils.TopicConstants.SUB_MALL;
@@ -80,15 +81,15 @@ public class TopicManager {
         Session session = connection.getSession();
         if (session == null) {
 
-            String token = rpcCmd.loadBean(String.class);
+            String token = rpcCmd.getMsg().loadBean(String.class);
             if (StringUtils.isEmpty(token)) {
-                connection.send(Response.error(rpcCmd, INVALID_REQUEST));
+                connection.send(MessageCreator.bussinesError(INVALID_REQUEST));
                 return;
             }
 
             String userId = stringRedisTemplate.opsForValue().get(token);
             if (StringUtils.isEmpty(userId)) {
-                connection.send(Response.error(rpcCmd, NOT_LOGIN));
+                connection.send(MessageCreator.bussinesError(NOT_LOGIN));
                 return;
             }
             session = userMap.computeIfAbsent(userId, Session::new);
@@ -98,7 +99,7 @@ public class TopicManager {
         session.addConnection(connection);
         connection.setSession(session);
         log.info("user login: userId:{}", session.getId());
-        connection.send(Response.success(rpcCmd));
+        connection.send(MessageCreator.okResponse(rpcCmd, LOGIN.name()));
     }
 
 
@@ -111,7 +112,7 @@ public class TopicManager {
         log.info("user logout: channelId:{}", connection.getId());
         Session session = connection.getSession();
         if (session == null) {
-            connection.send(Response.error(rpcCmd, NOT_LOGIN));
+            connection.send(MessageCreator.bussinesError(NOT_LOGIN));
             return;
         }
         //获取已经订阅的topics
@@ -129,7 +130,7 @@ public class TopicManager {
         }
         //移除掉当前设备连接
         session.removeConnection(connection);
-        connection.send(Response.success(rpcCmd));
+        connection.send(MessageCreator.okResponse(rpcCmd, LOGIN.name()));
     }
 
 
@@ -139,7 +140,7 @@ public class TopicManager {
     public void addSubscriber(Connection connection, RpcCmd rpcCmd) {
         Session session = connection.getSession();
         if (session == null) {
-            connection.send(Response.error(rpcCmd, NOT_LOGIN));
+            connection.send(MessageCreator.bussinesError(NOT_LOGIN));
             return;
         }
         //写死订阅三个topic
@@ -152,7 +153,7 @@ public class TopicManager {
             //被观察者管理观察者信息，用来通知
             topic.addSubscriber(session);
         }
-        connection.send(Response.success(rpcCmd));
+        connection.send(MessageCreator.okResponse(rpcCmd, LOGIN.name()));
     }
 
     /**
@@ -161,7 +162,7 @@ public class TopicManager {
     public void cancelSubscriber(Connection connection, RpcCmd rpcCmd) {
         Session session = connection.getSession();
         if (session == null) {
-            connection.send(Response.error(rpcCmd, NOT_LOGIN));
+            connection.send(MessageCreator.bussinesError(NOT_LOGIN));
             return;
         }
 
@@ -170,7 +171,7 @@ public class TopicManager {
             topic.removeSubscriber(session);
             session.removeTopic(topic);
         });
-        connection.send(Response.success(rpcCmd));
+        connection.send(MessageCreator.okResponse(rpcCmd, LOGIN.name()));
     }
 
 

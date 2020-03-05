@@ -8,11 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class TopicServer implements Runnable {
 
 
-    @Autowired
     TopicServerConfig rpcConfig;
 
-    @Autowired
     RpcServerInitializer rpcServerInitializer;
+
+    public TopicServer(TopicServerConfig rpcConfig,
+                       RpcServerInitializer rpcServerInitializer) {
+        this.rpcConfig = rpcConfig;
+        this.rpcServerInitializer = rpcServerInitializer;
+    }
 
 
     @Override

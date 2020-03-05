@@ -23,6 +23,7 @@ public interface SocketChannelManager {
     public void getChannel(String channelId);
 
     default public boolean contains(String channelId) {
+        return false;
     }
 
 }

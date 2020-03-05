@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class RpcCmd {
+public class RpcCmd implements Serializable{
 
     /**
      * 请求唯一标识
@@ -27,23 +27,8 @@ public class RpcCmd {
     private String event;
 
     /**
-     //     * 参数 不同的类型有不同的参数
-     //     * <p>
-     //     * 登录  access_token
-     //     * 订阅  type    order  advertise
-     //     * ACK  messageId
-     //     */
-//    private Map<String, Object> params;
-
-
-    /**
-     * 请求参数
+     * 请求的消息内容体
      */
-    private Serializable data;
-
-
-    public <T> T loadBean(Class<T> tClass) {
-        return (T) data;
-    }
+    private MessageDto msg;
 
 }

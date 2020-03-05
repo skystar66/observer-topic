@@ -1,6 +1,9 @@
 package com.topic.provider.topic.observer;
 
 
+import com.topic.msg.dto.MessageDto;
+import com.topic.msg.dto.RpcCmd;
+
 import java.util.Set;
 
 /**
@@ -38,6 +41,6 @@ public interface Subscriber {
     /**
      * 被观察者一旦发生变化 进行通知
      */
-    void send(Object message);
+    void send(RpcCmd rpcCmd);
 
 }

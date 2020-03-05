@@ -1,6 +1,7 @@
 package com.topic.msg.dto;
 
 
+import com.alibaba.fastjson.JSON;
 import com.topic.msg.MessageConstants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,6 +40,4 @@ public class MessageDto implements Serializable {
     public <T> T loadBean(Class<T> tClass) {
         return (T) data;
     }
-
-
 }

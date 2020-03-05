@@ -1,11 +1,12 @@
 package com.topic.msg.dto;
 
+import com.alibaba.fastjson.JSON;
 import lombok.Data;
 
 import java.io.Serializable;
 
-@Data
-public class RpcCmd implements Serializable{
+//@Data
+public class RpcCmd implements Serializable {
 
     /**
      * 请求唯一标识
@@ -31,4 +32,42 @@ public class RpcCmd implements Serializable{
      */
     private MessageDto msg;
 
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getRemoteKey() {
+        return remoteKey;
+    }
+
+    public void setRemoteKey(String remoteKey) {
+        this.remoteKey = remoteKey;
+    }
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
+    }
+
+    public MessageDto getMsg() {
+        return msg;
+    }
+
+    public void setMsg(MessageDto msg) {
+        this.msg = msg;
+    }
+
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
+    }
 }

@@ -1,5 +1,8 @@
 package com.topic.provider.topic.observer;
 
+import com.topic.msg.dto.MessageDto;
+import com.topic.msg.dto.RpcCmd;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -45,9 +48,9 @@ public class Session extends SubscriberAdapter implements Subscriber {
      * 广播到不同设备
      */
     @Override
-    public void send(Object message) {
+    public void send(RpcCmd rpcCmd) {
         connections.forEach(connection -> {
-            connection.send(message);
+            connection.send(rpcCmd);
         });
     }
 }

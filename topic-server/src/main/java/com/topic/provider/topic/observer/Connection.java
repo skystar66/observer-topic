@@ -46,11 +46,7 @@ public class Connection extends SubscriberAdapter implements Subscriber {
     }
 
     @Override
-    public void send(Object message) {
-        RpcCmd rpcCmd = new RpcCmd();
-        MessageDto messageDto = new MessageDto();
-        messageDto.setData(messageDto);
-        rpcCmd.setMsg(messageDto);
+    public synchronized void send(RpcCmd rpcCmd) {
         channel.writeAndFlush(rpcCmd);
     }
 }

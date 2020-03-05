@@ -83,13 +83,13 @@ public class TopicManager {
 
             String token = rpcCmd.getMsg().loadBean(String.class);
             if (StringUtils.isEmpty(token)) {
-                connection.send(MessageCreator.bussinesError(INVALID_REQUEST));
+                connection.send(MessageCreator.bussinesError(rpcCmd, INVALID_REQUEST));
                 return;
             }
 
             String userId = stringRedisTemplate.opsForValue().get(token);
             if (StringUtils.isEmpty(userId)) {
-                connection.send(MessageCreator.bussinesError(NOT_LOGIN));
+                connection.send(MessageCreator.bussinesError(rpcCmd, NOT_LOGIN));
                 return;
             }
             session = userMap.computeIfAbsent(userId, Session::new);
@@ -112,7 +112,7 @@ public class TopicManager {
         log.info("user logout: channelId:{}", connection.getId());
         Session session = connection.getSession();
         if (session == null) {
-            connection.send(MessageCreator.bussinesError(NOT_LOGIN));
+            connection.send(MessageCreator.bussinesError(rpcCmd, NOT_LOGIN));
             return;
         }
         //获取已经订阅的topics
@@ -140,7 +140,7 @@ public class TopicManager {
     public void addSubscriber(Connection connection, RpcCmd rpcCmd) {
         Session session = connection.getSession();
         if (session == null) {
-            connection.send(MessageCreator.bussinesError(NOT_LOGIN));
+            connection.send(MessageCreator.bussinesError(rpcCmd, NOT_LOGIN));
             return;
         }
         //写死订阅三个topic
@@ -162,7 +162,7 @@ public class TopicManager {
     public void cancelSubscriber(Connection connection, RpcCmd rpcCmd) {
         Session session = connection.getSession();
         if (session == null) {
-            connection.send(MessageCreator.bussinesError(NOT_LOGIN));
+            connection.send(MessageCreator.bussinesError(rpcCmd, NOT_LOGIN));
             return;
         }
 

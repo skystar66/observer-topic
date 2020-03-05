@@ -14,7 +14,7 @@ spring:
       min-idle: 20
       max-idle: 50
       max-wait: 5000
-    database: 13
+    database: 2
 executor:
     task:
     # websocket 和 redis 监听 执行器

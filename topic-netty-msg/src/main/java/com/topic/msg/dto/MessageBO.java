@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * 从客户端接收到的消息
  *
@@ -15,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @NoArgsConstructor
-public class MessageBO {
+public class MessageBO implements Serializable {
     private long id;
     private long fromId;
     private String fromName;

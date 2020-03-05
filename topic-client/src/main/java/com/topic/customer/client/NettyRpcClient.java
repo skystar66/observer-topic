@@ -32,7 +32,7 @@ public class NettyRpcClient extends RpcClient {
 
     @Override
     public MessageDto request(RpcCmd rpcCmd) throws Exception {
-        return request( rpcCmd, -1);
+        return request(rpcCmd, 2000);
     }
 
     @Override

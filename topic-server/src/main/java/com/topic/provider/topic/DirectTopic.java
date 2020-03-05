@@ -2,6 +2,8 @@ package com.topic.provider.topic;
 
 
 import com.topic.msg.dto.MessageBO;
+import com.topic.msg.dto.MessageDto;
+import com.topic.msg.dto.RpcCmd;
 import com.topic.provider.topic.observer.Topic;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +26,11 @@ public class DirectTopic extends AbstractTopic implements Topic {
     @Override
     public void notify(MessageBO messageBO) {
         getSubscriberMap().values().forEach(subscriber -> {
-            subscriber.send(messageBO);
+            RpcCmd rpcCmd = new RpcCmd();
+            MessageDto messageDto = new MessageDto();
+            messageDto.setData(messageBO);
+            rpcCmd.setMsg(messageDto);
+            subscriber.send(rpcCmd);
         });
     }
 

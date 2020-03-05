@@ -23,14 +23,9 @@ public class MessageCreator {
      * @param message message
      * @return MessageDto
      */
-    public static RpcCmd okResponse(Serializable message, String action) {
-        RpcCmd rpcCmd = new RpcCmd();
-        MessageDto messageDto = new MessageDto();
-        messageDto.setState(MessageConstants.STATE_OK);
-        messageDto.setCmd(action);
-        messageDto.setData(message);
-        rpcCmd.setMsg(messageDto);
-        return rpcCmd;
+    public static RpcCmd okResponse(RpcCmd message, String action) {
+        message.getMsg().setState(Integer.parseInt(action));
+        return message;
     }
 
     /**
@@ -40,15 +35,9 @@ public class MessageCreator {
      * @param message message
      * @return MessageDto
      */
-    public static RpcCmd failResponse(Serializable message, String action) {
-        RpcCmd rpcCmd = new RpcCmd();
-
-        MessageDto messageDto = new MessageDto();
-        messageDto.setCmd(action);
-        messageDto.setState(MessageConstants.STATE_EXCEPTION);
-        messageDto.setData(message);
-        rpcCmd.setMsg(messageDto);
-        return rpcCmd;
+    public static RpcCmd failResponse(RpcCmd message, String action) {
+        message.getMsg().setState(Integer.parseInt(action));
+        return message;
     }
 
 
@@ -59,11 +48,8 @@ public class MessageCreator {
      * @param message message
      * @return MessageDto
      */
-    public static RpcCmd bussinesError(ResponseCode responseCode) {
-        RpcCmd rpcCmd = new RpcCmd();
-        MessageDto messageDto = new MessageDto();
-        messageDto.setState(Integer.parseInt(responseCode.getCode()));
-        rpcCmd.setMsg(messageDto);
+    public static RpcCmd bussinesError(RpcCmd rpcCmd, ResponseCode responseCode) {
+        rpcCmd.getMsg().setState(Integer.parseInt(responseCode.getCode()));
         return rpcCmd;
     }
 

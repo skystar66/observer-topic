@@ -1,0 +1,30 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: topic-server
+  redis:
+    host: 192.168.112.146
+    port: 6379
+    timeout: 10000
+    password: wC3Xo8E5mlmgMb
+    test-on-borrow: true
+    pool:
+      max-active: 100
+      min-idle: 20
+      max-idle: 50
+      max-wait: 5000
+    database: 13
+executor:
+    task:
+    # websocket 和 redis 监听 执行器
+      core-pool-size: 10
+      keep-alive: 1000
+      max-size: 10
+      name: 'async-task-pool %d'
+      queue-size: 1000
+topic:
+  server:
+    host: 127.0.0.1
+    port: 9010

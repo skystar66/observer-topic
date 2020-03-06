@@ -78,8 +78,6 @@ public class RpcClientInitializer implements DisposableBean {
                     }
                 }
             }
-            // 忽略已连接的连接
-            return Optional.empty();
         }
         log.warn("Finally, netty connection fail , socket is {}", socketAddress);
         //报警，该服务失效

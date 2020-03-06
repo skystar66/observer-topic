@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.topic.msg.MessageConstants.STATE_OK;
 import static com.topic.msg.enums.EventType.LOGIN;
 import static com.topic.msg.enums.ResponseCode.INVALID_REQUEST;
 import static com.topic.msg.enums.ResponseCode.NOT_LOGIN;
@@ -99,7 +100,7 @@ public class TopicManager {
         session.addConnection(connection);
         connection.setSession(session);
         log.info("user login: userId:{}", session.getId());
-        connection.send(MessageCreator.okResponse(rpcCmd, LOGIN.name()));
+        connection.send(MessageCreator.okResponse(rpcCmd, STATE_OK));
     }
 
 
@@ -107,8 +108,8 @@ public class TopicManager {
      * 用户退出登录
      */
     public void handleLogout(Connection connection, RpcCmd rpcCmd) {
-        NettyChannelManager.getInstance().removeChannel(connection.getChannel());
-        connectionMap.remove(connection);
+//        NettyChannelManager.getInstance().removeChannel(connection.getChannel());
+        connectionMap.remove(connection.getId());
         log.info("user logout: channelId:{}", connection.getId());
         Session session = connection.getSession();
         if (session == null) {
@@ -125,12 +126,12 @@ public class TopicManager {
                 topic.removeSubscriber(session);
                 session.removeTopic(topic);
             });
-            userMap.remove(session.getUserId());
+            userMap.remove(session.getId());
             log.info("user logout: userId:{}", session.getId());
         }
         //移除掉当前设备连接
         session.removeConnection(connection);
-        connection.send(MessageCreator.okResponse(rpcCmd, LOGIN.name()));
+        connection.send(MessageCreator.okResponse(rpcCmd, STATE_OK));
     }
 
 
@@ -153,7 +154,7 @@ public class TopicManager {
             //被观察者管理观察者信息，用来通知
             topic.addSubscriber(session);
         }
-        connection.send(MessageCreator.okResponse(rpcCmd, LOGIN.name()));
+        connection.send(MessageCreator.okResponse(rpcCmd, STATE_OK));
     }
 
     /**
@@ -171,7 +172,7 @@ public class TopicManager {
             topic.removeSubscriber(session);
             session.removeTopic(topic);
         });
-        connection.send(MessageCreator.okResponse(rpcCmd, LOGIN.name()));
+        connection.send(MessageCreator.okResponse(rpcCmd, STATE_OK));
     }
 
 

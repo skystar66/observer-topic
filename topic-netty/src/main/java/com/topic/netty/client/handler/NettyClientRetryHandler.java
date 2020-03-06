@@ -4,6 +4,7 @@ package com.topic.netty.client.handler;
 import com.topic.msg.MessageConstants;
 import com.topic.msg.dto.MessageDto;
 import com.topic.msg.dto.RpcCmd;
+import com.topic.msg.manager.SocketChannelManager;
 import com.topic.netty.util.NettyContext;
 import com.topic.netty.util.SnowflakeIdWorker;
 import io.netty.channel.ChannelHandler;
@@ -31,11 +32,13 @@ import java.util.List;
 public class NettyClientRetryHandler extends ChannelInboundHandlerAdapter {
 
 
-
     private RpcCmd heartCmd;
 
     @Autowired
     NettyRetryConnect retryConnect;
+
+    @Autowired
+    SocketChannelManager socketChannelManager;
 
     /**
      * 构建心跳信息
@@ -63,6 +66,7 @@ public class NettyClientRetryHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
         SocketAddress socketAddress = ctx.channel().remoteAddress();
+        socketChannelManager.removeChannel(ctx.channel());
         log.error("socketAddress:{} ", socketAddress);
         retryConnect.reConnect(socketAddress);
     }
@@ -70,7 +74,7 @@ public class NettyClientRetryHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         log.error("NettyClientRetryHandler - exception . ", cause);
-
+        socketChannelManager.removeChannel(ctx.channel());
         if (cause instanceof ConnectException) {
             Thread.sleep(1000 * 15);
             log.error("try connect tx-manager:{} ", ctx.channel().remoteAddress());

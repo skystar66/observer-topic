@@ -23,8 +23,8 @@ public class MessageCreator {
      * @param message message
      * @return MessageDto
      */
-    public static RpcCmd okResponse(RpcCmd message, String action) {
-        message.getMsg().setState(Integer.parseInt(action));
+    public static RpcCmd okResponse(RpcCmd message, int action) {
+        message.getMsg().setState(action);
         return message;
     }
 
@@ -35,8 +35,8 @@ public class MessageCreator {
      * @param message message
      * @return MessageDto
      */
-    public static RpcCmd failResponse(RpcCmd message, String action) {
-        message.getMsg().setState(Integer.parseInt(action));
+    public static RpcCmd failResponse(RpcCmd message, int action) {
+        message.getMsg().setState(action);
         return message;
     }
 

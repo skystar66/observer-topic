@@ -32,6 +32,7 @@ public abstract class AbstractTopic implements Topic {
 
     @Override
     public Subscriber removeSubscriber(Subscriber subscriber) {
+
         return subscriberMap.remove(subscriber.getId());
     }
 

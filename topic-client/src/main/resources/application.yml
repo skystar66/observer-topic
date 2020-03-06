@@ -4,6 +4,17 @@ server:
 spring:
   application:
     name: topic-client
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 10000
+    test-on-borrow: true
+    pool:
+      max-active: 100
+      min-idle: 20
+      max-idle: 50
+      max-wait: 5000
+    database: 2
 topic:
   client:
     host: 127.0.0.1

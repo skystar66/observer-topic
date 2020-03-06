@@ -17,7 +17,7 @@ public class Session extends SubscriberAdapter implements Subscriber {
     private final String userId;
 
 
-    public String getUserId() {
+    public String getId() {
         return userId;
     }
 
